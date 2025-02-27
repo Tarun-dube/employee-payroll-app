@@ -1,5 +1,6 @@
 package com.bridgelabz.employeepayrollapp.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.*;
@@ -24,6 +25,7 @@ public class Employee {
         this.salary = salary;
     }
 
+
     public Long getId() {
         return id;
     }
@@ -40,6 +42,7 @@ public class Employee {
         this.name = name;
     }
 
+
     public String getDepartment() {
         return department;
     }
@@ -48,6 +51,7 @@ public class Employee {
         this.department = department;
     }
 
+
     public int getSalary() {
         return salary;
     }
@@ -55,14 +59,15 @@ public class Employee {
     public void setSalary(int salary) {
         this.salary = salary;
     }
-
     @Override
     public String toString() {
         return "Employee{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", department='" + department + '\'' +
+
                 ", salary=" + salary +
+                ", department='" + department + '\'' +
+
                 '}';
     }
 }

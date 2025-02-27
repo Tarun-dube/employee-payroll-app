@@ -5,9 +5,13 @@ package com.bridgelabz.employeepayrollapp;
 
 
 import com.bridgelabz.employeepayrollapp.DTO.EmployeeDTO;
+
+import com.bridgelabz.employeepayrollapp.Service.EmployeeService;
 import com.bridgelabz.employeepayrollapp.entity.Employee;
+
 import com.bridgelabz.employeepayrollapp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -17,6 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
+
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
@@ -44,6 +49,7 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public String deleteEmployee(@PathVariable Long id){
         return  employeeService.deleteEmployee(id);
+
     }
 
 }

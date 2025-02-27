@@ -2,6 +2,7 @@ package com.bridgelabz.employeepayrollapp.DTO;
 
 
 
+
 public class EmployeeDTO {
     private String name;
     private double salary;
@@ -31,4 +32,6 @@ public class EmployeeDTO {
     public void setDepartment(String department) {
         this.department = department;
     }
+
 }
+

@@ -2,41 +2,56 @@ package com.bridgelabz.employeepayrollapp;
 
 
 
-import com.bridgelabz.employeepayrollapp.entity.Employee;
-import com.bridgelabz.employeepayrollapp.service.EmployeeService;
+
+
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
-    private EmployeeService employeeService;
 
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
+    private final Map<Long,String> dataStore=new HashMap<>();
 
+    // gell all datat
     @GetMapping
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    public Map<Long,String> getAllData(){
+        return dataStore;
     }
+    //get by id
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable Long id) {
-        return employeeService.getEmployeeById(id);
+    public String getById(@PathVariable Long id){
+        return dataStore.getOrDefault(id,"value not found for "+id);
     }
+    // add data
     @PostMapping
-    public Employee addEmployee(@RequestBody Employee employee) {
-        return employeeService.addEmployee(employee);
+    public String addData(@RequestParam Long id,@RequestParam String name){
+        dataStore.put(id,name);
+        return "data added successfully";
     }
+    //update data
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable Long id,@RequestBody Employee employee) {
-        return employeeService.updateEmployee(id,employee);
+    public String updateData(@PathVariable Long id,@RequestParam String name){
+        if(dataStore.containsKey(id)){
+            dataStore.put(id,name);
+            return "data updated successfully";
+        }
+        return "data not found for "+id;
     }
+
+    //delete data
     @DeleteMapping("/{id}")
-    public void deleteEmployee(@PathVariable Long id) {
-        employeeService.deleteEmployee(id);
+    public String deleteData(@PathVariable Long id){
+        dataStore.remove(id);
+        return "data deleted successfully";
     }
+
+
+
+
 
 }

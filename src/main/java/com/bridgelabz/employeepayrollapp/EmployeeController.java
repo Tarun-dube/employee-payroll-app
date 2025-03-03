@@ -9,7 +9,8 @@ import com.bridgelabz.employeepayrollapp.DTO.EmployeeDTO;
 import com.bridgelabz.employeepayrollapp.Service.EmployeeService;
 import com.bridgelabz.employeepayrollapp.entity.Employee;
 
-import com.bridgelabz.employeepayrollapp.service.EmployeeService;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/employee")
 
@@ -28,11 +29,15 @@ public class EmployeeController {
 
     @GetMapping
     public List<Employee> getEmployee(){
+        log.info("Fetching all employees...");
+
         return employeeService.getEmployee();
     }
 
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Long id){
+        log.info("getting employee: {}", id);
+
         return employeeService.getEmployeeById(id);
     }
 
@@ -48,6 +53,8 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     public String deleteEmployee(@PathVariable Long id){
+        log.warn("Deleting employee with ID: {}", id);
+
         return  employeeService.deleteEmployee(id);
 
     }

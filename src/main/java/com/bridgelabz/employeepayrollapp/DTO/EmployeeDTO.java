@@ -5,7 +5,7 @@ package com.bridgelabz.employeepayrollapp.DTO;
 
 public class EmployeeDTO {
     private String name;
-    private double salary;
+    private int salary;
     private String department;
 
     // Getters and Setters
@@ -17,11 +17,11 @@ public class EmployeeDTO {
         this.name = name;
     }
 
-    public double getSalary() {
+    public int getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(int salary) {
         this.salary = salary;
     }
 

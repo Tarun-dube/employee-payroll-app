@@ -1,14 +1,15 @@
-package com.bridgelabz.employeepayrollapp.service;
+package com.bridgelabz.employeepayrollapp.Service;
 
 import com.bridgelabz.employeepayrollapp.DTO.EmployeeDTO;
 import com.bridgelabz.employeepayrollapp.entity.Employee;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @Service
 public class EmployeeService {
 
@@ -17,6 +18,8 @@ private Long nextId=1L;
 
 //create and store employee
     public Employee addEmployee(EmployeeDTO employeeDTO){
+        log.debug("Saving employee: {}", employeeDTO);
+
         Employee employee=new Employee();
         employee.setId(nextId);
         employee.setName(employeeDTO.getName());
@@ -28,6 +31,8 @@ private Long nextId=1L;
     }
     //get all employee
     public List<Employee> getEmployee(){
+        log.debug("Retrieving all employees from database...");
+
         return employeeList;
     }
     //get employee by id

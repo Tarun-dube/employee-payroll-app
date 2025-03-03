@@ -1,60 +1,75 @@
-package com.bridgelabz.employeepayrollapp.Service;
+package com.bridgelabz.employeepayrollapp.service;
 
 import com.bridgelabz.employeepayrollapp.DTO.EmployeeDTO;
-import com.bridgelabz.employeepayrollapp.entity.Employee;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
+import com.bridgelabz.employeepayrollapp.entity.Employee;
+import com.bridgelabz.employeepayrollapp.repository.EmployeeRepository;
+
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
-@Slf4j
+import java.util.stream.Collectors;
+
 @Service
 public class EmployeeService {
+    private final EmployeeRepository repository;
 
-private final List<Employee> employeeList=new ArrayList<>();
-private Long nextId=1L;
+    public EmployeeService(EmployeeRepository repository) {
+        this.repository = repository;
+    }
 
-//create and store employee
-    public Employee addEmployee(EmployeeDTO employeeDTO){
-        log.debug("Saving employee: {}", employeeDTO);
+    // Convert Employee to EmployeeDTO
+    private EmployeeDTO convertToDTO(Employee employee) {
+        return new EmployeeDTO(employee.getName(),  employee.getSalary(),employee.getDepartment());
+    }
 
-        Employee employee=new Employee();
-        employee.setId(nextId);
+    // Convert EmployeeDTO to Employee
+    private Employee convertToEntity(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
         employee.setName(employeeDTO.getName());
         employee.setDepartment(employeeDTO.getDepartment());
         employee.setSalary(employeeDTO.getSalary());
-        employeeList.add(employee);
-        nextId++;
         return employee;
     }
-    //get all employee
-    public List<Employee> getEmployee(){
-        log.debug("Retrieving all employees from database...");
 
-        return employeeList;
+    // Get all employees and return as DTOs
+    public List<EmployeeDTO> getAllEmployees() {
+        return repository.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
-    //get employee by id
-    public Employee getEmployeeById(Long id){
-        Optional<Employee> employee = employeeList.stream()
-                .filter(emp -> emp.getId().equals(id))
-                .findFirst();
-        return employee.orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
-    }
-    //update list
-    public Employee udpateEmployee(Long id, EmployeeDTO employeeDTO){
-        Employee employee=getEmployeeById(id);
-        employee.setName(employeeDTO.getName());
-        employee.setSalary(employeeDTO.getSalary());
-        employee.setDepartment(employeeDTO.getDepartment());
-        return employee;
-    }
-    //delete employee
-    public String deleteEmployee(Long id){
-        Employee employee=getEmployeeById(id);
 
-        employeeList.remove(employee);
-        return  "deleted successfully";
+    // Get a single employee by ID and return as DTO
+    public EmployeeDTO getEmployeeById(Long id) {
+        Employee employee = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        return convertToDTO(employee);
+    }
+
+    // Add new employee using EmployeeDTO
+    public EmployeeDTO addEmployee(EmployeeDTO employeeDTO) {
+        Employee employee = convertToEntity(employeeDTO);
+        Employee savedEmployee = repository.save(employee);
+        return convertToDTO(savedEmployee);
+    }
+
+    // Update employee details
+    @Transactional
+    public EmployeeDTO updateEmployee(Long id, EmployeeDTO updatedEmployeeDTO) {
+        return repository.findById(id).map(employee -> {
+            employee.setName(updatedEmployeeDTO.getName());
+            employee.setDepartment(updatedEmployeeDTO.getDepartment());
+            employee.setSalary(updatedEmployeeDTO.getSalary());
+            Employee updatedEmployee = repository.save(employee);
+            return convertToDTO(updatedEmployee);
+        }).orElseThrow(() -> new RuntimeException("Employee not found"));
+    }
+
+    // Delete an employee by ID
+    @Transactional
+    public void deleteEmployee(Long id) {
+        repository.deleteById(id);
     }
 }

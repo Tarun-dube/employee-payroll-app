@@ -1,28 +1,29 @@
 package com.bridgelabz.employeepayrollapp.DTO;
 
+
 import lombok.Data;
 
 @Data
 public class EmployeeDTO {
     private String name;
+    private double salary;
     private String department;
-    private int salary;
 
-    public EmployeeDTO() {
-    }
-
-    public EmployeeDTO(String name, String department, int salary) {
-        this.name = name;
-        this.department = department;
-        this.salary = salary;
-    }
-
+    // Getters and Setters
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 
     public String getDepartment() {
@@ -33,11 +34,5 @@ public class EmployeeDTO {
         this.department = department;
     }
 
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
-    }
 }
+

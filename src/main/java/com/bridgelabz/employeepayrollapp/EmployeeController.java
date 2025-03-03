@@ -6,6 +6,7 @@ package com.bridgelabz.employeepayrollapp;
 
 import com.bridgelabz.employeepayrollapp.DTO.EmployeeDTO;
 import com.bridgelabz.employeepayrollapp.entity.Employee;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;

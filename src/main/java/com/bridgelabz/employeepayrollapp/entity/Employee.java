@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.*;
 import lombok.NoArgsConstructor;
 
-
+@Data
 public class Employee {
 
     private Long id;
